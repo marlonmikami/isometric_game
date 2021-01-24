@@ -126,10 +126,7 @@ def main():
             pos_y -= 1
 
         # Prints the crosshair and it's trail
-        pos = pygame.mouse.get_pos()
-        if config.mouse_trail_size > 0:
-            draw_crosshair_trail(buffer_full_screen, assets.crosshair, pos)
-        buffer_full_screen.blit(assets.crosshair, pos)
+        draw_crosshair(buffer_full_screen)
 
         # Update the window
         WIN.blit(buffer_full_screen, (0, 0))
@@ -149,16 +146,19 @@ def draw_scanlines():
     return buffer
 
 
-def draw_crosshair_trail(buffer, crosshair, pos):
-    alpha_multiplier = 100 / config.mouse_trail_size
-    for i in range(0, len(previous_positions)):
-        crosshair.set_alpha((i + 1) * alpha_multiplier)
-        buffer.blit(crosshair, previous_positions[i])
+def draw_crosshair(buffer):
+    pos = pygame.mouse.get_pos()
+    if config.mouse_trail_size > 0:
+        alpha_multiplier = 100 / config.mouse_trail_size
+        for i in range(0, len(previous_positions)):
+            assets.crosshair.set_alpha((i + 1) * alpha_multiplier)
+            buffer.blit(assets.crosshair, previous_positions[i])
 
-    previous_positions.append(pos)
-    if len(previous_positions) > config.mouse_trail_size:
-        previous_positions.pop(0)
-    crosshair.set_alpha(255)
+        previous_positions.append(pos)
+        if len(previous_positions) > config.mouse_trail_size:
+            previous_positions.pop(0)
+    assets.crosshair.set_alpha(255)
+    buffer.blit(assets.crosshair, pos)
 
 
 def define_tiles_positions():

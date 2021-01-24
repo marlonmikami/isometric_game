@@ -1,6 +1,6 @@
 width = 1024
 height = 576
-mouse_trail_size = 0
+mouse_trail_size = 20
 fps = 0
 scale = 1
 game_area_width = 600
