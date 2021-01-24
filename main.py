@@ -21,7 +21,7 @@ tile = assets.tile_short
 
 position = (2, 2)
 
-myfont = pygame.font.SysFont('Consolas', 16)
+myfont = pygame.font.SysFont('Consolas', 12)
 
 padding_x = 350
 padding_y = 0
@@ -67,7 +67,8 @@ def main():
     buffer_visible_map = pygame.Surface((config.game_area_width, config.game_area_height))
     buffer_visible_map.blit(buffer_full_map, (0, 0), (pos_x, pos_y, config.game_area_width, config.game_area_height))
 
-    buffer_play_area = pygame.Surface((config.game_area_width, config.game_area_height))
+    buffer_play_area = pygame.Surface((config.game_area_width + 2, config.game_area_height + 2))
+    buffer_play_area.fill(colors.white)
 
     buffer_full_screen = pygame.Surface((config.width, config.height))
 
@@ -77,14 +78,16 @@ def main():
 
         buffer_full_screen.fill(colors.black)
         # Load the map
-        buffer_visible_map.blit(buffer_full_map, (0, 0), (pos_x, pos_y, config.game_area_width, config.game_area_height))
+        buffer_visible_map.blit(buffer_full_map, (0, 0),
+                                (pos_x, pos_y, config.game_area_width, config.game_area_height))
         buffer_visible_map = assets.pallet_swap(buffer_visible_map, colors.magenta, screen.get_color())
-        buffer_play_area.blit(buffer_visible_map, (0, 0))
+        buffer_play_area.blit(buffer_visible_map, (1, 1))
 
         # Load the sprites
-        buffer_play_area.blit(sphere, (200 - 16, 250 - 16))
+        buffer_play_area.blit(sphere, ((config.game_area_width / 2) - 16, (config.game_area_height / 2) - 16))
         text_surface = myfont.render("FPS: % s" % clock.get_fps(), False, (255, 255, 255))
-        buffer_full_screen.blit(buffer_play_area, (50, 50))
+        offset = (config.height - config.game_area_height) / 2
+        buffer_full_screen.blit(buffer_play_area, (offset, offset))
 
         # Post Processing
         buffer_full_screen.blit(buffer_scanlines, (0, 0))
