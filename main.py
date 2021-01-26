@@ -4,6 +4,7 @@ import assets
 import colors
 import config
 import screen
+import time
 
 # Initialize pygame
 pygame.init()
@@ -50,10 +51,7 @@ def main():
     sphere = assets.sphere
     sphere.set_colorkey(colors.black)
     sphere.set_alpha(255)
-    # crosshair = assets.crosshair
-    # text_cell_surface = myfont.render("", False, (0, 0, 0))
 
-    # background_color = (50, 50, 50)
 
     define_tiles_positions()
 
@@ -72,9 +70,18 @@ def main():
 
     buffer_full_screen = pygame.Surface((config.width, config.height))
 
+    # Delta time variables
+    speed = 200
+    dt = 0
+    prev_time = time.time()
+
     run = True
     while run:
+        # Timing
         clock.tick(config.fps)
+        now = time.time()
+        dt = now - prev_time
+        prev_time = now
 
         buffer_full_screen.fill(colors.black)
         # Load the map
@@ -116,17 +123,17 @@ def main():
                     key_left_pressed = False
 
         if key_up_pressed:
-            pos_y -= 1
-            pos_x += 2
+            pos_y -= 1 * speed * dt
+            pos_x += 2 * speed * dt
         if key_down_pressed:
-            pos_y += 1
-            pos_x -= 2
+            pos_y += 1 * speed * dt
+            pos_x -= 2 * speed * dt
         if key_right_pressed:
-            pos_x += 2
-            pos_y += 1
+            pos_x += 2 * speed * dt
+            pos_y += 1 * speed * dt
         if key_left_pressed:
-            pos_x -= 2
-            pos_y -= 1
+            pos_x -= 2 * speed * dt
+            pos_y -= 1 * speed * dt
 
         # Prints the crosshair and it's trail
         draw_crosshair(buffer_full_screen)
